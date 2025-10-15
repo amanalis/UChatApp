@@ -1,15 +1,14 @@
 plugins {
-    alias(libs.plugins.android.application)
-}
+    id("com.android.application")}
 
 android {
     namespace = "com.example.uchatapp"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.uchatapp"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -41,5 +40,5 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    implementation (libs.otpview)
+    implementation ("com.github.mukeshsolanki.android-otpview-pinview:otpview:3.1.0")
 }
