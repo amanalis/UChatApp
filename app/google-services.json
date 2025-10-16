@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "930269141325",
+    "project_id": "uchatapp-355be",
+    "storage_bucket": "uchatapp-355be.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930269141325:android:8379a666c606553d14bf04",
+        "android_client_info": {
+          "package_name": "com.example.uchatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIBJqVwfdPfTJFZC2AQ2Py_HdV1zSmOT8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
