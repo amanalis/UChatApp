@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:inputType="number"
+                android:inputType="number|phone"
                 android:itemBackground="@color/grey"
                 android:textAllCaps="true"
                 android:textColor="@android:color/black"
@@ -77,14 +77,45 @@
                 app:OtpViewType="line"
                 android:layout_marginTop="5dp"/>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/continueBtn"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/timerText"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="#29B62F"
-                android:text="CONTINUE"
-                android:textColor="#fff" />
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:text="Resend available in 60s"
+                android:textColor="#BC444345"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/retryBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="#BC444345"
+                    android:text="Resend otp"
+                    android:textColor="#FFFFFF"
+                    android:layout_weight="1"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/continueBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="#29B62F"
+                    android:text="CONTINUE"
+                    android:textColor="#fff"
+                    android:layout_weight="1"/>
+
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
