@@ -60,7 +60,7 @@ public class OTPActivity extends AppCompatActivity {
     }
 
     private void initGetOTP() {
-        String phoneNumber = getIntent().getStringExtra("phoneNumber");
+        String phoneNumber = getIntent().getStringExtra("phoneNumber").trim();
         binding.phoneLabel.setText("Verify " + phoneNumber);
 
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(auth)
@@ -120,7 +120,7 @@ public class OTPActivity extends AppCompatActivity {
         binding.timerText.setText("Resend available in 60s");
         startTimer();
 
-        String phoneNumber = getIntent().getStringExtra("phoneNumber");
+        String phoneNumber = getIntent().getStringExtra("phoneNumber").trim();
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber(phoneNumber)
                 .setTimeout(60L, TimeUnit.SECONDS)
