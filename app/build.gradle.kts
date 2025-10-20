@@ -54,6 +54,8 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-database-ktx")
     implementation("com.google.firebase:firebase-storage-ktx")
+    implementation(libs.firebase.database)
+    implementation("com.google.firebase:firebase-storage")
 
     // OTP View
     implementation("com.github.mukeshsolanki.android-otpview-pinview:otpview:3.1.0")
@@ -61,4 +63,6 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    //circle image view
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 }
