@@ -2,6 +2,7 @@ package com.example.uchatapp;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -105,6 +106,10 @@ public class OTPActivity extends AppCompatActivity {
 
                         auth.signInWithCredential(credential).addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
+                                Intent intent = new Intent(OTPActivity.this,SetupProfileActivity.class);
+                                startActivity(intent);
+                                finishAffinity();
+
                                 Toast.makeText(OTPActivity.this, "Logged In", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(OTPActivity.this, "Failed", Toast.LENGTH_SHORT).show();
