@@ -1,4 +1,4 @@
-package com.example.uchatapp;
+package com.example.uchatapp.Models;
 
 public class User {
     private String uid, name, phoneNumber, profilePic;

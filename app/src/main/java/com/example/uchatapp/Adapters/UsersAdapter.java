@@ -1,6 +1,7 @@
-package com.example.uchatapp;
+package com.example.uchatapp.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.uchatapp.Activities.ChatActivity;
+import com.example.uchatapp.Models.User;
+import com.example.uchatapp.R;
 import com.example.uchatapp.databinding.RowCoversationBinding;
 
 import java.util.ArrayList;
@@ -38,6 +42,13 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         Glide.with(context).load(user.getProfilePic())
                 .placeholder(R.drawable.avatar)
                 .into(holder.binding.profileImg);
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ChatActivity.class);
+            intent.putExtra("name",user.getName());
+            intent.putExtra("uid",user.getUid());
+            context.startActivity(intent);
+        });
     }
 
     @Override

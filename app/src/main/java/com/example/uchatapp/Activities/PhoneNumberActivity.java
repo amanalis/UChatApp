@@ -1,4 +1,4 @@
-package com.example.uchatapp;
+package com.example.uchatapp.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;

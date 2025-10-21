@@ -1,4 +1,4 @@
-package com.example.uchatapp;
+package com.example.uchatapp.Activities;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +8,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.uchatapp.R;
+import com.example.uchatapp.Models.User;
+import com.example.uchatapp.Adapters.UsersAdapter;
 import com.example.uchatapp.databinding.ActivityMainBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

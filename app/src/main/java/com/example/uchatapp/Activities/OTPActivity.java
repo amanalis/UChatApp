@@ -1,4 +1,4 @@
-package com.example.uchatapp;
+package com.example.uchatapp.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;

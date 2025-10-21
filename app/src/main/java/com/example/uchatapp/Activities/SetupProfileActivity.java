@@ -1,4 +1,4 @@
-package com.example.uchatapp;
+package com.example.uchatapp.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.uchatapp.Models.User;
 import com.example.uchatapp.databinding.ActivitySetupProfileBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
