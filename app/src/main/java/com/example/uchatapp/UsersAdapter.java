@@ -1,7 +1,6 @@
 package com.example.uchatapp;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.uchatapp.databinding.RowCoversationBinding;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHolder> {
@@ -35,6 +34,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         User user = users.get(position);
 
         holder.binding.username.setText(user.getName());
+
+        Glide.with(context).load(user.getProfilePic())
+                .placeholder(R.drawable.avatar)
+                .into(holder.binding.profileImg);
     }
 
     @Override
