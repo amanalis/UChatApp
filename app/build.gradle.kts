@@ -59,6 +59,7 @@ dependencies {
 
     // OTP View
     implementation("com.github.mukeshsolanki.android-otpview-pinview:otpview:3.1.0")
+    implementation(libs.recyclerview)
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
