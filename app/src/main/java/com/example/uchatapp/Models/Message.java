@@ -3,7 +3,7 @@ package com.example.uchatapp.Models;
 public class Message {
     private String messageId, message, senderId;
     private long timeStamp;
-    private int feeling;
+    private long feeling = -1;
 
     public Message() {
     }
@@ -46,11 +46,11 @@ public class Message {
         this.timeStamp = timeStamp;
     }
 
-    public int getFeeling() {
+    public long getFeeling() {
         return feeling;
     }
 
-    public void setFeeling(int feeling) {
+    public void setFeeling(long feeling) {
         this.feeling = feeling;
     }
 }
