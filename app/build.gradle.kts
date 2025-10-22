@@ -69,4 +69,7 @@ dependencies {
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
     implementation("com.github.bumptech.glide:glide:5.0.5")
+
+    //reactions library
+    implementation("com.github.pgreze:android-reactions:1.6")
 }
