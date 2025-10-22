@@ -97,9 +97,11 @@ public class OTPActivity extends AppCompatActivity {
                     dialog.dismiss();
 
                     binding.otpView.setEnabled(true);
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                     binding.otpView.requestFocus();
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(binding.otpView, InputMethodManager.SHOW_IMPLICIT);
+                    }, 300);
 
                     binding.otpView.setOtpCompletionListener(otp -> {
                         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, otp);
