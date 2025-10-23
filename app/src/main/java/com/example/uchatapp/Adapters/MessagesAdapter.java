@@ -64,6 +64,7 @@ public class MessagesAdapter extends RecyclerView.Adapter{
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Message message = messages.get(position);
+
         int[] reactions = new int[]{
                 R.drawable.ic_fb_like,
                 R.drawable.ic_fb_love,
@@ -110,36 +111,31 @@ public class MessagesAdapter extends RecyclerView.Adapter{
             viewHolder.binding.message.setText(message.getMessage());
 
             if(message.getFeeling()>=0){
-                message.setFeeling(reactions[(int) message.getFeeling()]);
+//                message.setFeeling(reactions[(int) message.getFeeling()]);
+                viewHolder.binding.feeling.setImageResource(reactions[(int) message.getFeeling()]);
                 viewHolder.binding.feeling.setVisibility(View.VISIBLE);
             } else {
                 viewHolder.binding.feeling.setVisibility(View.GONE);
             }
 
-            viewHolder.binding.message.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    popup.onTouch(v,event);
-                    return false;
-                }
+            viewHolder.binding.message.setOnTouchListener((view, event) -> {
+                popup.onTouch(view,event);
+                return false;
             });
         } else {
             ReceiveViewHolder viewHolder = (ReceiveViewHolder) holder;
             viewHolder.binding.message.setText(message.getMessage());
 
             if(message.getFeeling()>=0){
-                message.setFeeling(reactions[(int) message.getFeeling()]);
+                viewHolder.binding.feeling.setImageResource(reactions[(int) message.getFeeling()]);
                 viewHolder.binding.feeling.setVisibility(View.VISIBLE);
             } else {
                 viewHolder.binding.feeling.setVisibility(View.GONE);
             }
 
-            viewHolder.binding.message.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    popup.onTouch(v,event);
-                    return false;
-                }
+            viewHolder.binding.message.setOnTouchListener((view, event) -> {
+                popup.onTouch(view,event);
+                return false;
             });
 
         }
