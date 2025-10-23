@@ -7,7 +7,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.uchatapp.Adapters.TopStatusAdapter;
+import com.example.uchatapp.Models.UserStatus;
 import com.example.uchatapp.R;
 import com.example.uchatapp.Models.User;
 import com.example.uchatapp.Adapters.UsersAdapter;
@@ -25,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     FirebaseDatabase database;
     ArrayList<User> users;
     UsersAdapter usersAdapter;
+    TopStatusAdapter topStatusAdapter;
+    ArrayList<UserStatus> userStatuses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         users = new ArrayList<>();
         usersAdapter = new UsersAdapter(this,users);
+        topStatusAdapter = new TopStatusAdapter(this,userStatuses);
+
+        binding.statusList.setAdapter(topStatusAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        binding.statusList.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setAdapter(usersAdapter);
 
         database.getReference().child("users").addValueEventListener(new ValueEventListener() {
