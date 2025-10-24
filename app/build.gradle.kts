@@ -8,8 +8,8 @@ android {
     namespace = "com.example.uchatapp"
     compileSdk = 36
 
-    buildFeatures{
-        viewBinding=true
+    buildFeatures {
+        viewBinding = true
     }
 
     defaultConfig {
@@ -79,4 +79,7 @@ dependencies {
 
     //story view
     implementation("com.github.OMARIHAMZA:StoryView:1.0.2-alpha")
+
+    //shimmer loader
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 }
