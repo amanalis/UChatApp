@@ -59,6 +59,7 @@ dependencies {
 
     // OTP View
     implementation("com.github.mukeshsolanki.android-otpview-pinview:otpview:3.1.0")
+
     implementation(libs.recyclerview)
     implementation(libs.cardview)
 
@@ -75,4 +76,7 @@ dependencies {
 
     //status view
     implementation("com.github.3llomi:CircularStatusView:V1.0.3")
+
+    //story view
+    implementation("com.github.OMARIHAMZA:StoryView:1.0.2-alpha")
 }
