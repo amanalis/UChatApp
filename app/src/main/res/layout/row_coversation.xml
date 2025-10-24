@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp">
+    android:padding="10dp"
+    android:background="?selectableItemBackground">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileImg"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/avatar" />
@@ -21,7 +22,7 @@
         android:layout_marginStart="8dp"
         android:text="Sample Name"
         android:textColor="@color/black"
-        android:textSize="14sp"
+        android:textSize="16dp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/profileImg"
         app:layout_constraintTop_toTopOf="@+id/profileImg" />
@@ -31,7 +32,7 @@
         android:layout_width="66dp"
         android:layout_height="18dp"
         android:text="Tap to chat"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/username"
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
@@ -50,8 +51,8 @@
         android:id="@+id/view"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:background="#27000000"
+        android:layout_marginTop="16dp"
+        android:background="#949393"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileImg" />
