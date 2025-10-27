@@ -7,6 +7,12 @@
         android:icon="@drawable/ic_search"
         android:title="Search"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/profile"
+        android:title="Search"
+        app:showAsAction="always"
+        app:actionLayout="@layout/menu_profile_item"/>
+
     <item android:id="@+id/groups"
         android:title="Groups" />
     <item android:id="@+id/invite"
