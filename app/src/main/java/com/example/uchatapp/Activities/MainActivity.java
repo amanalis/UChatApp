@@ -201,6 +201,12 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Search clicked", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.setting) {
             Toast.makeText(this, "Settings clicked", Toast.LENGTH_SHORT).show();
+        }else if (id == R.id.logout) {
+            Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(MainActivity.this, PhoneNumberActivity.class);
+            startActivity(intent);
+            finishAffinity();
         }
         return super.onOptionsItemSelected(item);
     }
