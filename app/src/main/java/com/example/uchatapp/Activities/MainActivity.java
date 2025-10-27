@@ -2,10 +2,11 @@ package com.example.uchatapp.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.uchatapp.Adapters.TopStatusAdapter;
 import com.example.uchatapp.Models.Status;
 import com.example.uchatapp.Models.UserStatus;
@@ -21,10 +23,6 @@ import com.example.uchatapp.R;
 import com.example.uchatapp.Models.User;
 import com.example.uchatapp.Adapters.UsersAdapter;
 import com.example.uchatapp.databinding.ActivityMainBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,7 +30,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         user = snapshot.getValue(User.class);
+                        invalidateOptionsMenu();
                     }
 
                     @Override
@@ -210,6 +208,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.top_menu, menu);
+
+        MenuItem profileItem = menu.findItem(R.id.profile);
+        View actionView = profileItem.getActionView();
+        ImageView profileImage = actionView.findViewById(R.id.profileImage);
+
+        if(user != null && user.getProfilePic() != null){
+            Glide.with(this).load(user.getProfilePic())
+                    .placeholder(R.drawable.avatar)
+                    .circleCrop()
+                    .into(profileImage);
+        } else {
+            profileImage.setImageResource(R.drawable.avatar);
+        }
+
+        profileImage.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SetupProfileActivity.class);
+            intent.putExtra("isEdit", true);
+            startActivity(intent);
+        });
+
         return super.onCreateOptionsMenu(menu);
     }
 }
