@@ -42,10 +42,12 @@ public class SetupProfileActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
 
         // ✅ Load existing user data if available
+        dialog.show();
         database.getReference().
                 child("users")
                 .child(auth.getUid())
                 .get().addOnSuccessListener(dataSnapshot -> {
+                    dialog.dismiss();
                     if (dataSnapshot.exists()) {
                         existingUser = dataSnapshot.getValue(User.class);
 
