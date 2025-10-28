@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -85,6 +86,17 @@ public class MainActivity extends AppCompatActivity {
         binding.statusList.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setAdapter(usersAdapter);
 
+        //Shimmer Chats
+        LinearLayout shimmerChats = binding.shimmerChats;
+        for (int i = 0; i < 12; i++) {
+            View shimmerItem = getLayoutInflater().inflate(R.layout.demo_layout, shimmerChats, false);
+            shimmerChats.addView(shimmerItem);
+        }
+
+        binding.shimmer.startShimmer();
+        binding.shimmer.setVisibility(View.VISIBLE);
+        binding.recyclerView.setVisibility(View.GONE);
+
         database.getReference().child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -95,6 +107,12 @@ public class MainActivity extends AppCompatActivity {
                         users.add(user);
                     }
                 }
+
+                //stop Shimmer and show actual list
+                binding.shimmer.stopShimmer();
+                binding.shimmer.setVisibility(View.GONE);
+                binding.recyclerView.setVisibility(View.VISIBLE);
+
                 usersAdapter.notifyDataSetChanged();
             }
 
@@ -103,6 +121,17 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        //Shimmer Status
+        LinearLayout shimmerStatus = binding.shimmerStatus;
+        for (int i = 0; i < 8; i++) {
+            View shimmerItem = getLayoutInflater().inflate(R.layout.demo_status, shimmerStatus, false);
+            shimmerStatus.addView(shimmerItem);
+        }
+
+        binding.shimmer2.startShimmer();
+        binding.shimmer2.setVisibility(View.VISIBLE);
+        binding.statusList.setVisibility(View.GONE);
 
         database.getReference().child("stories").addValueEventListener(new ValueEventListener() {
             @Override
@@ -125,6 +154,12 @@ public class MainActivity extends AppCompatActivity {
                         status.setStatuses(statuses);
                         userStatuses.add(status);
                     }
+
+                    //stop Shimmer and show actual list
+                    binding.shimmer2.stopShimmer();
+                    binding.shimmer2.setVisibility(View.GONE);
+                    binding.statusList.setVisibility(View.VISIBLE);
+
                     topStatusAdapter.notifyDataSetChanged();
                 }
             }
