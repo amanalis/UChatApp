@@ -112,7 +112,7 @@ public class MessagesAdapter extends RecyclerView.Adapter{
             if (message.getMessage().equals("photo")){
                 viewHolder.binding.image.setVisibility(View.VISIBLE);
                 viewHolder.binding.message.setVisibility(View.GONE);
-                Glide.with(context).load(message.getImageUrl()).into(viewHolder.binding.image);
+                Glide.with(context).load(message.getImageUrl()).placeholder(R.drawable.placeholder).into(viewHolder.binding.image);
             }
 
             viewHolder.binding.message.setText(message.getMessage());
@@ -129,8 +129,18 @@ public class MessagesAdapter extends RecyclerView.Adapter{
                 popup.onTouch(view,event);
                 return false;
             });
+
+            viewHolder.binding.image.setOnTouchListener((view, event) -> {
+                popup.onTouch(view,event);
+                return false;
+            });
         } else {
             ReceiveViewHolder viewHolder = (ReceiveViewHolder) holder;
+            if (message.getMessage().equals("photo")){
+                viewHolder.binding.image.setVisibility(View.VISIBLE);
+                viewHolder.binding.message.setVisibility(View.GONE);
+                Glide.with(context).load(message.getImageUrl()).placeholder(R.drawable.placeholder).into(viewHolder.binding.image);
+            }
             viewHolder.binding.message.setText(message.getMessage());
 
             if(message.getFeeling()>=0){
@@ -145,6 +155,10 @@ public class MessagesAdapter extends RecyclerView.Adapter{
                 return false;
             });
 
+            viewHolder.binding.image.setOnTouchListener((view, event) -> {
+                popup.onTouch(view,event);
+                return false;
+            });
         }
     }
 
