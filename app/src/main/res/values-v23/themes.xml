@@ -1,7 +1,0 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-  <style name="WhiteToolbarTheme" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
-    <!-- This attributes is used by navigation icon and overflow icon -->
-    <item name="colorOnPrimary">@color/white</item>
-    <item name="colorControlNormal">@color/white</item>
-  </style>
-</resources>
