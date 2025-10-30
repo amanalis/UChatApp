@@ -238,9 +238,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        FirebaseDatabase.getInstance().getReference("presence")
-                .child(FirebaseAuth.getInstance().getUid())
-                .setValue("Offline");
+        String currentId = FirebaseAuth.getInstance().getUid();//current userID
+        FirebaseDatabase.getInstance().getReference("presence").child(currentId).setValue("Offline");
     }
 
     @Override

@@ -4,6 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
@@ -77,8 +80,12 @@ public class ChatActivity extends AppCompatActivity {
                 if (snapshot.exists()){
                     String status = snapshot.getValue(String.class);
                     if(!status.isEmpty()){
-                        binding.status.setText(status);
-                        binding.status.setVisibility(View.VISIBLE);
+                        if(status.equals("Offline")){
+                            binding.status.setVisibility(View.GONE);
+                        }else {
+                            binding.status.setText(status);
+                            binding.status.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
             }
@@ -162,6 +169,34 @@ public class ChatActivity extends AppCompatActivity {
             startActivityForResult(intent, 25);
         });
 
+        final Handler handler = new Handler();
+
+        binding.messageBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                database.getReference().child("presence").child(senderUid).setValue("typing...");
+                handler.removeCallbacksAndMessages(null);
+                handler.postDelayed(userStopTyping,1000);
+            }
+
+            Runnable userStopTyping = new Runnable() {
+                @Override
+                public void run() {
+                    database.getReference().child("presence").child(senderUid).setValue("Online");
+                }
+            };
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+        });
+
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 //        getSupportActionBar().setTitle(name);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -235,9 +270,8 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        FirebaseDatabase.getInstance().getReference("presence")
-                .child(FirebaseAuth.getInstance().getUid())
-                .setValue("Offline");
+        String currentId = FirebaseAuth.getInstance().getUid();//current userID
+        FirebaseDatabase.getInstance().getReference("presence").child(currentId).setValue("Offline");
     }
 
     @Override
