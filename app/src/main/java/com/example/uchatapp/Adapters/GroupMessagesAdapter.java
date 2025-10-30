@@ -10,14 +10,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.uchatapp.Models.Message;
+import com.example.uchatapp.Models.User;
 import com.example.uchatapp.R;
+import com.example.uchatapp.databinding.ItemReceiveGroupBinding;
 import com.example.uchatapp.databinding.ItemRecieveBinding;
 import com.example.uchatapp.databinding.ItemSendBinding;
+import com.example.uchatapp.databinding.ItemSentGroupBinding;
 import com.github.pgreze.reactions.ReactionPopup;
 import com.github.pgreze.reactions.ReactionsConfig;
 import com.github.pgreze.reactions.ReactionsConfigBuilder;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -49,10 +55,10 @@ public class GroupMessagesAdapter extends RecyclerView.Adapter{
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == ITEM_SENT){
-            View view = LayoutInflater.from(context).inflate(R.layout.item_send,parent,false);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_sent_group,parent,false);
             return new SentViewHolder(view);
         } else {
-            View view = LayoutInflater.from(context).inflate(R.layout.item_recieve,parent,false);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_receive_group,parent,false);
             return new ReceiveViewHolder(view);
         }
     }
@@ -105,6 +111,24 @@ public class GroupMessagesAdapter extends RecyclerView.Adapter{
                 Glide.with(context).load(message.getImageUrl()).placeholder(R.drawable.placeholder).into(viewHolder.binding.image);
             }
 
+            FirebaseDatabase.getInstance().getReference()
+                    .child("users")
+                    .child(message.getSenderId())
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(snapshot.exists()){
+                                        User user = snapshot.getValue(User.class);
+                                        viewHolder.binding.name.setText("@"+user.getName());
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
             viewHolder.binding.message.setText(message.getMessage());
 
             if(message.getFeeling()>=0){
@@ -131,6 +155,25 @@ public class GroupMessagesAdapter extends RecyclerView.Adapter{
                 viewHolder.binding.message.setVisibility(View.GONE);
                 Glide.with(context).load(message.getImageUrl()).placeholder(R.drawable.placeholder).into(viewHolder.binding.image);
             }
+
+            FirebaseDatabase.getInstance().getReference()
+                    .child("users")
+                    .child(message.getSenderId())
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.exists()){
+                                User user = snapshot.getValue(User.class);
+                                viewHolder.binding.name.setText("@"+user.getName());
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
             viewHolder.binding.message.setText(message.getMessage());
 
             if(message.getFeeling()>=0){
@@ -159,18 +202,18 @@ public class GroupMessagesAdapter extends RecyclerView.Adapter{
 
     public class SentViewHolder extends RecyclerView.ViewHolder{
 
-        ItemSendBinding binding;
+        ItemSentGroupBinding binding;
         public SentViewHolder(@NonNull View itemView) {
             super(itemView);
-            binding = ItemSendBinding.bind(itemView);
+            binding = ItemSentGroupBinding.bind(itemView);
         }
     }
 
     public class ReceiveViewHolder extends RecyclerView.ViewHolder{
-        ItemRecieveBinding binding;
+        ItemReceiveGroupBinding binding;
         public ReceiveViewHolder(@NonNull View itemView) {
             super(itemView);
-            binding = ItemRecieveBinding.bind(itemView);
+            binding = ItemReceiveGroupBinding.bind(itemView);
         }
     }
 }
