@@ -62,6 +62,8 @@ public class ChatActivity extends AppCompatActivity {
         dialog.setMessage("Uploading Image");
         dialog.setCancelable(false);
 
+        messages = new ArrayList<>();
+
         String name = getIntent().getStringExtra("name");
         String profile = getIntent().getStringExtra("image");
 
@@ -99,7 +101,6 @@ public class ChatActivity extends AppCompatActivity {
         senderRoom = senderUid + receiverUid;
         receiverRoom = receiverUid + senderUid;
 
-        messages = new ArrayList<>();
         adapter = new MessagesAdapter(this, messages, senderRoom, receiverRoom);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
