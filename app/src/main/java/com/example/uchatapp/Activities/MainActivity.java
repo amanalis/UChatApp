@@ -256,6 +256,8 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, PhoneNumberActivity.class);
             startActivity(intent);
             finishAffinity();
+        } else if (id == R.id.groups){
+            startActivity(new Intent(MainActivity.this,GroupChatActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
