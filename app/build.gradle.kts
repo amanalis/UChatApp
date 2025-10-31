@@ -62,6 +62,7 @@ dependencies {
 
     implementation(libs.recyclerview)
     implementation(libs.cardview)
+    implementation(libs.firebase.messaging)
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
