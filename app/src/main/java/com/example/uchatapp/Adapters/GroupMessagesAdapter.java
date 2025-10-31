@@ -1,9 +1,12 @@
 package com.example.uchatapp.Adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,9 +15,8 @@ import com.bumptech.glide.Glide;
 import com.example.uchatapp.Models.Message;
 import com.example.uchatapp.Models.User;
 import com.example.uchatapp.R;
+import com.example.uchatapp.databinding.DeleteDailogBinding;
 import com.example.uchatapp.databinding.ItemReceiveGroupBinding;
-import com.example.uchatapp.databinding.ItemRecieveBinding;
-import com.example.uchatapp.databinding.ItemSendBinding;
 import com.example.uchatapp.databinding.ItemSentGroupBinding;
 import com.github.pgreze.reactions.ReactionPopup;
 import com.github.pgreze.reactions.ReactionsConfig;
@@ -81,6 +83,9 @@ public class GroupMessagesAdapter extends RecyclerView.Adapter{
                 .build();
 
         ReactionPopup popup = new ReactionPopup(context, config, (pos) -> {
+            if (pos < 0)
+                return false;
+
             if (holder.getClass() == SentViewHolder.class){
                 SentViewHolder viewHolder = (SentViewHolder) holder;
                 viewHolder.binding.feeling.setImageResource(reactions[pos]);
@@ -94,10 +99,6 @@ public class GroupMessagesAdapter extends RecyclerView.Adapter{
 
             FirebaseDatabase.getInstance().getReference()
                     .child("public")
-                    .child(message.getMessageId()).setValue(message);
-
-            FirebaseDatabase.getInstance().getReference()
-                    .child("chats")
                     .child(message.getMessageId()).setValue(message);
             return true; // true is closing popup, false is requesting a new selection
         });
@@ -139,7 +140,9 @@ public class GroupMessagesAdapter extends RecyclerView.Adapter{
                 viewHolder.binding.feeling.setVisibility(View.GONE);
             }
 
-            viewHolder.binding.message.setOnTouchListener((view, event) -> {
+            // --- FIX: same handling for receiver ---
+            setupReactionsAndDelete(viewHolder.binding.getRoot(), popup, message);
+            /*viewHolder.binding.message.setOnTouchListener((view, event) -> {
                 popup.onTouch(view,event);
                 return false;
             });
@@ -148,6 +151,53 @@ public class GroupMessagesAdapter extends RecyclerView.Adapter{
                 popup.onTouch(view,event);
                 return false;
             });
+
+            viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    View view = LayoutInflater.from(context).inflate(R.layout.delete_dailog, null);
+                    DeleteDailogBinding binding = DeleteDailogBinding.bind(view);
+                    AlertDialog dialog = new AlertDialog.Builder(context)
+                            .setTitle("Delete Message")
+                            .setView(binding.getRoot())
+                            .create();
+
+                    binding.everyone.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            message.setMessage("This message is removed.");
+                            message.setFeeling(-1);
+                            FirebaseDatabase.getInstance().getReference()
+                                    .child("public")
+                                    .child(message.getMessageId()).setValue(message);
+
+                            dialog.dismiss();
+                        }
+                    });
+
+                    binding.delete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            FirebaseDatabase.getInstance().getReference()
+                                    .child("public")
+                                    .child(message.getMessageId()).setValue(null);
+                            dialog.dismiss();
+                        }
+                    });
+
+                    binding.cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+                    Toast.makeText(context, "Long clicked!", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });*/
+
         } else {
             ReceiveViewHolder viewHolder = (ReceiveViewHolder) holder;
             if (message.getMessage().equals("photo")){
@@ -183,7 +233,9 @@ public class GroupMessagesAdapter extends RecyclerView.Adapter{
                 viewHolder.binding.feeling.setVisibility(View.GONE);
             }
 
-            viewHolder.binding.message.setOnTouchListener((view, event) -> {
+            // --- FIX: same handling for receiver ---
+            setupReactionsAndDelete(viewHolder.binding.getRoot(), popup, message);
+            /*viewHolder.binding.message.setOnTouchListener((view, event) -> {
                 popup.onTouch(view,event);
                 return false;
             });
@@ -192,6 +244,52 @@ public class GroupMessagesAdapter extends RecyclerView.Adapter{
                 popup.onTouch(view,event);
                 return false;
             });
+
+            viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    View view = LayoutInflater.from(context).inflate(R.layout.delete_dailog, null);
+                    DeleteDailogBinding binding = DeleteDailogBinding.bind(view);
+                    AlertDialog dialog = new AlertDialog.Builder(context)
+                            .setTitle("Delete Message")
+                            .setView(binding.getRoot())
+                            .create();
+
+                    binding.everyone.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            message.setMessage("This message is removed.");
+                            message.setFeeling(-1);
+                            FirebaseDatabase.getInstance().getReference()
+                                    .child("public")
+                                    .child(message.getMessageId()).setValue(message);
+
+                            dialog.dismiss();
+                        }
+                    });
+
+                    binding.delete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            FirebaseDatabase.getInstance().getReference()
+                                    .child("public")
+                                    .child(message.getMessageId()).setValue(null);
+                            dialog.dismiss();
+                        }
+                    });
+
+                    binding.cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+
+                    return false;
+                }
+            });*/
         }
     }
 
@@ -215,5 +313,72 @@ public class GroupMessagesAdapter extends RecyclerView.Adapter{
             super(itemView);
             binding = ItemReceiveGroupBinding.bind(itemView);
         }
+    }
+
+    private void setupReactionsAndDelete(View itemRoot, ReactionPopup popup, Message message) {
+        itemRoot.setOnTouchListener(new View.OnTouchListener() {
+            private static final int LONG_PRESS_THRESHOLD = 500; // milliseconds
+            private long pressStartTime;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        pressStartTime = System.currentTimeMillis();
+                        return true;
+
+                    case MotionEvent.ACTION_UP:
+                        long pressDuration = System.currentTimeMillis() - pressStartTime;
+                        if (pressDuration < LONG_PRESS_THRESHOLD) {
+                            // short tap → show reactions
+                            popup.onTouch(v, event);
+                        } else {
+                            // long press → delete dialog
+                            showDeleteDialog(message);
+                        }
+                        return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    public void showDeleteDialog(Message message){
+        View view = LayoutInflater.from(context).inflate(R.layout.delete_dailog,null);
+        DeleteDailogBinding binding = DeleteDailogBinding.bind(view);
+
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle("DeleteMessage")
+                .setView(binding.getRoot())
+                .create();
+
+        binding.everyone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                message.setMessage("This message is removed.");
+                message.setFeeling(-1);
+                FirebaseDatabase.getInstance().getReference()
+                        .child("public")
+                        .child(message.getMessageId()).setValue(message);
+                dialog.dismiss();
+            }
+        });
+        binding.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseDatabase.getInstance().getReference()
+                        .child("public")
+                        .child(message.getMessageId()).setValue(null);
+                dialog.dismiss();
+            }
+        });
+
+        binding.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }
