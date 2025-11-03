@@ -204,6 +204,17 @@ public class ChatActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 //        getSupportActionBar().setTitle(name);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        binding.toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChatActivity.this,InfoActivity.class);
+                intent.putExtra("name", name);
+                intent.putExtra("image", profile);
+                intent.putExtra("receiverUid", receiverUid);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
