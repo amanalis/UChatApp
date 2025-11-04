@@ -13,6 +13,7 @@ firebaseStorage = "22.0.1"
 recyclerview = "1.4.0"
 cardview = "1.0.0"
 firebaseMessaging = "25.0.1"
+volley = "1.2.1"
 
 [libraries]
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
@@ -28,6 +29,7 @@ firebase-storage = { group = "com.google.firebase", name = "firebase-storage", v
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
+volley = { module = "com.android.volley:volley", version.ref = "volley" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

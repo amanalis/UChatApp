@@ -85,4 +85,5 @@ dependencies {
     implementation("com.facebook.shimmer:shimmer:0.5.0")
 
     implementation("com.github.mancj:MaterialSearchBar:0.8.5")
+    implementation(libs.volley)
 }
