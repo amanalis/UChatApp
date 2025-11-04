@@ -24,11 +24,13 @@ import com.example.uchatapp.R;
 import com.example.uchatapp.Models.User;
 import com.example.uchatapp.Adapters.UsersAdapter;
 import com.example.uchatapp.databinding.ActivityMainBinding;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -54,11 +56,27 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        database = FirebaseDatabase.getInstance();
+
+        FirebaseMessaging.getInstance()
+                .getToken()
+                .addOnSuccessListener(new OnSuccessListener<String>() {
+                    @Override
+                    public void onSuccess(String token) {
+                        HashMap<String,Object> map = new HashMap<>();
+                        map.put("token",token);
+                        database.getReference()
+                                .child("users")
+                                .child(FirebaseAuth.getInstance().getUid())
+                                .updateChildren(map);
+                        Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Uploading Image...");
         progressDialog.setCancelable(false);
 
-        database = FirebaseDatabase.getInstance();
         users = new ArrayList<>();
         userStatuses = new ArrayList<>();
 
@@ -103,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 users.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     User user = dataSnapshot.getValue(User.class);
-                    if(!user.getUid().equals(FirebaseAuth.getInstance().getUid())){
+                    if (!user.getUid().equals(FirebaseAuth.getInstance().getUid())) {
                         users.add(user);
                     }
                 }
@@ -112,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
                 binding.shimmer.stopShimmer();
                 binding.shimmer.setVisibility(View.GONE);
                 binding.recyclerView.setVisibility(View.VISIBLE);
+                binding.view3.setVisibility(View.VISIBLE);
+
 
                 usersAdapter.notifyDataSetChanged();
             }
@@ -136,9 +156,9 @@ public class MainActivity extends AppCompatActivity {
         database.getReference().child("stories").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
+                if (snapshot.exists()) {
                     userStatuses.clear();
-                    for (DataSnapshot storySnapshot : snapshot.getChildren()){
+                    for (DataSnapshot storySnapshot : snapshot.getChildren()) {
                         UserStatus status = new UserStatus();
                         status.setName(storySnapshot.child("name").getValue(String.class));
                         status.setProfileImage(storySnapshot.child("profileImage").getValue(String.class));
@@ -146,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
                         ArrayList<Status> statuses = new ArrayList<>();
 
-                        for (DataSnapshot statusSnapshot:storySnapshot.child("statuses").getChildren()){
+                        for (DataSnapshot statusSnapshot : storySnapshot.child("statuses").getChildren()) {
                             Status sampleStatus = statusSnapshot.getValue(Status.class);
                             statuses.add(sampleStatus);
                         }
@@ -159,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
                     binding.shimmer2.stopShimmer();
                     binding.shimmer2.setVisibility(View.GONE);
                     binding.statusList.setVisibility(View.VISIBLE);
+                    binding.view3.setVisibility(View.VISIBLE);
 
                     topStatusAdapter.notifyDataSetChanged();
                 }
@@ -248,16 +269,17 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.search) {
             Toast.makeText(this, "Search clicked", Toast.LENGTH_SHORT).show();
+
         } else if (id == R.id.setting) {
             Toast.makeText(this, "Settings clicked", Toast.LENGTH_SHORT).show();
-        }else if (id == R.id.logout) {
+        } else if (id == R.id.logout) {
             Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(MainActivity.this, PhoneNumberActivity.class);
             startActivity(intent);
             finishAffinity();
-        } else if (id == R.id.groups){
-            startActivity(new Intent(MainActivity.this,GroupChatActivity.class));
+        } else if (id == R.id.groups) {
+            startActivity(new Intent(MainActivity.this, GroupChatActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -270,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
         View actionView = profileItem.getActionView();
         ImageView profileImage = actionView.findViewById(R.id.profileImage);
 
-        if(user != null && user.getProfilePic() != null){
+        if (user != null && user.getProfilePic() != null) {
             Glide.with(this).load(user.getProfilePic())
                     .placeholder(R.drawable.avatar)
                     .circleCrop()

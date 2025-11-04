@@ -1,7 +1,7 @@
 package com.example.uchatapp.Models;
 
 public class User {
-    private String uid, name, phoneNumber, profilePic;
+    private String uid, name, phoneNumber, profilePic, token;
 
     public User(){
 
@@ -44,5 +44,13 @@ public class User {
 
     public void setProfilePic(String profilePic) {
         this.profilePic = profilePic;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
