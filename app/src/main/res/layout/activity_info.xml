@@ -89,6 +89,8 @@
                     android:layout_marginHorizontal="20dp"
                     android:elevation="4dp"
                     app:cardBackgroundColor="@color/card_selector"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:cardCornerRadius="12dp">
 
                     <LinearLayout
@@ -119,7 +121,9 @@
                     android:layout_height="80dp"
                     android:layout_marginHorizontal="20dp"
                     android:elevation="4dp"
-                    app:cardBackgroundColor="#EFEFEF"
+                    app:cardBackgroundColor="@color/card_selector"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:cardCornerRadius="12dp">
 
                     <LinearLayout
@@ -150,7 +154,9 @@
                     android:layout_height="80dp"
                     android:layout_marginHorizontal="20dp"
                     android:elevation="4dp"
-                    app:cardBackgroundColor="#EFEFEF"
+                    app:cardBackgroundColor="@color/card_selector"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:cardCornerRadius="12dp">
 
                     <LinearLayout
@@ -198,21 +204,24 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_margin="12dp"
-                android:gravity="center">
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:background="@color/ripple_effect"
+                android:clickable="true"
+                android:focusable="true">
 
                 <ImageView
                     android:id="@+id/imageView5"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_weight="1"
                     app:srcCompat="@drawable/baseline_favorite_border_24"
                     app:tint="#505050"
                     android:layout_marginRight="8dp"/>
@@ -221,7 +230,6 @@
                     android:id="@+id/favTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="Add to Favorites"
                     android:textColor="#505050"
                     android:textSize="14sp"
@@ -229,17 +237,19 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_margin="12dp"
-                android:gravity="center">
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:background="@color/ripple_effect"
+                android:clickable="true"
+                android:focusable="true">
 
                 <ImageView
                     android:id="@+id/imageView3"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_weight="1"
                     app:srcCompat="@drawable/baseline_block_24"
                     app:tint="#C72424"
                     android:layout_marginRight="8dp"/>
@@ -248,7 +258,6 @@
                     android:id="@+id/blockTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="Block Aman"
                     android:textColor="#C72424"
                     android:textSize="14sp"
@@ -256,17 +265,19 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_margin="12dp"
-                android:gravity="center">
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:background="@color/ripple_effect"
+                android:clickable="true"
+                android:focusable="true">
 
                 <ImageView
                     android:id="@+id/imageView4"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_weight="1"
                     app:srcCompat="@drawable/baseline_thumb_down_24"
                     app:tint="#C72424"
                     android:layout_marginRight="8dp"/>
@@ -275,7 +286,6 @@
                     android:id="@+id/reportTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="Report Aman"
                     android:textColor="#C72424"
                     android:textSize="14sp"
