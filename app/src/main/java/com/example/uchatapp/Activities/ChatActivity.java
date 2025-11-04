@@ -1,5 +1,6 @@
 package com.example.uchatapp.Activities;
 
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,6 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.uchatapp.Models.Message;
 
@@ -33,10 +40,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -69,6 +79,7 @@ public class ChatActivity extends AppCompatActivity {
 
         String name = getIntent().getStringExtra("name");
         String profile = getIntent().getStringExtra("image");
+        String token = getIntent().getStringExtra("token");
 
         binding.name.setText(name);
         Glide.with(this).load(profile).placeholder(R.drawable.avatar).into(binding.profile);
@@ -215,6 +226,45 @@ public class ChatActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    void sendNotification(String name, String message, String token){
+        try {
+            RequestQueue queue = Volley.newRequestQueue(this);
+
+            String url = "https://fcm.googleapis.com/fcm/send";
+
+            JSONObject data = new JSONObject();
+            data.put("title", name);
+            data.put("body", message);
+
+            JSONObject notificationData = new JSONObject();
+            notificationData.put("notification",data);
+            notificationData.put("to",token);
+
+            JsonObjectRequest request = new JsonObjectRequest(url, notificationData, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject jsonObject) {
+                    Toast.makeText(ChatActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    Toast.makeText(ChatActivity.this, volleyError.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String,String> map = new HashMap<>();
+                    String key = "";
+                    map.put("Authorization","");
+                    return super.getHeaders();
+                }
+            };
+        } catch (Exception ex){
+
+        }
+
     }
 
     @Override
