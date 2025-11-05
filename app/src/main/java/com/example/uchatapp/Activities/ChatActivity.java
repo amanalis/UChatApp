@@ -1,6 +1,5 @@
 package com.example.uchatapp.Activities;
 
-import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,15 +7,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
@@ -46,7 +43,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -93,12 +89,12 @@ public class ChatActivity extends AppCompatActivity {
         database.getReference().child("presence").child(receiverUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
+                if (snapshot.exists()) {
                     String status = snapshot.getValue(String.class);
-                    if(!status.isEmpty()){
-                        if(status.equals("Offline")){
+                    if (!status.isEmpty()) {
+                        if (status.equals("Offline")) {
                             binding.status.setVisibility(View.GONE);
-                        }else {
+                        } else {
                             binding.status.setText(status);
                             binding.status.setVisibility(View.VISIBLE);
                         }
@@ -170,7 +166,8 @@ public class ChatActivity extends AppCompatActivity {
                             .child(randomKey)
                             .setValue(message)
                             .addOnSuccessListener(unused1 -> {
-
+                                sendNotification(name,message.getMessage(),token);
+                                Log.d("FCM", token);
                             }));
         });
 
@@ -191,7 +188,7 @@ public class ChatActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 database.getReference().child("presence").child(senderUid).setValue("typing...");
                 handler.removeCallbacksAndMessages(null);
-                handler.postDelayed(userStopTyping,1000);
+                handler.postDelayed(userStopTyping, 1000);
             }
 
             Runnable userStopTyping = new Runnable() {
@@ -219,7 +216,7 @@ public class ChatActivity extends AppCompatActivity {
         binding.toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ChatActivity.this,InfoActivity.class);
+                Intent intent = new Intent(ChatActivity.this, InfoActivity.class);
                 intent.putExtra("name", name);
                 intent.putExtra("image", profile);
                 intent.putExtra("receiverUid", receiverUid);
@@ -228,41 +225,32 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    void sendNotification(String name, String message, String token){
+    void sendNotification(String name, String message, String token) {
         try {
             RequestQueue queue = Volley.newRequestQueue(this);
 
-            String url = "https://fcm.googleapis.com/fcm/send";
-
+            String url = "http://10.43.0.147:5000/sendNotification";
+//            String url = "http://10.0.2.2:5000/sendNotification";
             JSONObject data = new JSONObject();
+            data.put("token", token);
             data.put("title", name);
             data.put("body", message);
 
-            JSONObject notificationData = new JSONObject();
-            notificationData.put("notification",data);
-            notificationData.put("to",token);
-
-            JsonObjectRequest request = new JsonObjectRequest(url, notificationData, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject jsonObject) {
-                    Toast.makeText(ChatActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    Toast.makeText(ChatActivity.this, volleyError.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }){
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap<String,String> map = new HashMap<>();
-                    String key = "";
-                    map.put("Authorization","");
-                    return super.getHeaders();
-                }
-            };
-        } catch (Exception ex){
-
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, data,
+                    response -> {
+                        Toast.makeText(this, "Notification Send", Toast.LENGTH_SHORT).show();
+                    },
+                    error -> {
+                        if (error.networkResponse != null) {
+                            Log.e("Volley", "Error Response code: " + error.networkResponse.statusCode);
+                            Log.e("Volley", "Error data: " + new String(error.networkResponse.data));
+                        } else {
+                            Log.e("Volley", "Error: " + error.toString());
+                        }
+                    });
+            queue.add(request);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -332,6 +320,7 @@ public class ChatActivity extends AppCompatActivity {
         String currentId = FirebaseAuth.getInstance().getUid();//current userID
         database.getReference().child("presence").child(currentId).setValue("Online");
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -347,7 +336,7 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.chat_top_menu,menu);
+        getMenuInflater().inflate(R.menu.chat_top_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
