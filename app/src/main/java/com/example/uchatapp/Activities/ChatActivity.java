@@ -238,7 +238,7 @@ public class ChatActivity extends AppCompatActivity {
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, data,
                     response -> {
-                        Toast.makeText(this, "Notification Send", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(this, "Notification Send", Toast.LENGTH_SHORT).show();
                     },
                     error -> {
                         if (error.networkResponse != null) {
