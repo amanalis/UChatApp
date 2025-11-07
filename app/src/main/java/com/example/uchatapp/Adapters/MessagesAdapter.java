@@ -1,5 +1,6 @@
 package com.example.uchatapp.Adapters;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.github.pgreze.reactions.ReactionsConfig;
 import com.github.pgreze.reactions.ReactionsConfigBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import java.util.ArrayList;
 
@@ -65,6 +67,7 @@ public class MessagesAdapter extends RecyclerView.Adapter {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Message message = messages.get(position);
@@ -129,7 +132,6 @@ public class MessagesAdapter extends RecyclerView.Adapter {
             viewHolder.binding.message.setText(message.getMessage());
 
             if (message.getFeeling() >= 0) {
-//                message.setFeeling(reactions[(int) message.getFeeling()]);
                 viewHolder.binding.feeling.setImageResource(reactions[(int) message.getFeeling()]);
                 viewHolder.binding.feeling.setVisibility(View.VISIBLE);
             } else {
@@ -139,11 +141,13 @@ public class MessagesAdapter extends RecyclerView.Adapter {
             viewHolder.binding.message.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    boolean isFeelingEnabled = false;
+                    FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
+                    boolean isFeelingEnabled = remoteConfig.getBoolean("isFeelingsEnabled");
+
                     if (isFeelingEnabled){
                         popup.onTouch(v,event);
                     } else {
-                        Toast.makeText(context, "This feature is disabled temporaily.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "This feature is disabled temporally.", Toast.LENGTH_SHORT).show();
                     }
                     return false;
                 }
@@ -172,6 +176,12 @@ public class MessagesAdapter extends RecyclerView.Adapter {
                             FirebaseDatabase.getInstance().getReference()
                                     .child("chats")
                                     .child(senderRoom)
+                                    .child("messages")
+                                    .child(message.getMessageId()).setValue(message);
+
+                            FirebaseDatabase.getInstance().getReference()
+                                    .child("chats")
+                                    .child(receiverRoom)
                                     .child("messages")
                                     .child(message.getMessageId()).setValue(message);
                             dialog.dismiss();
