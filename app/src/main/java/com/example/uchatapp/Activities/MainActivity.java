@@ -2,6 +2,9 @@ package com.example.uchatapp.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.uchatapp.Adapters.TopStatusAdapter;
 import com.example.uchatapp.Models.Status;
 import com.example.uchatapp.Models.UserStatus;
@@ -25,12 +30,15 @@ import com.example.uchatapp.Models.User;
 import com.example.uchatapp.Adapters.UsersAdapter;
 import com.example.uchatapp.databinding.ActivityMainBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -56,21 +64,58 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        FirebaseRemoteConfig mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(0)
+                .build();
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
+
+        mFirebaseRemoteConfig.fetchAndActivate().addOnSuccessListener(new OnSuccessListener<Boolean>() {
+            @Override
+            public void onSuccess(Boolean aBoolean) {
+                String backgroundImg = mFirebaseRemoteConfig.getString("backgroundImage");
+                Glide.with(MainActivity.this)
+                        .load(backgroundImg)
+                        .into(binding.backgroundImg);
+                binding.backgroundImg.setAlpha(63);
+
+                //toolbar code
+                String toolbarColor = mFirebaseRemoteConfig.getString("toolbarColor");
+                String toolbarImage = mFirebaseRemoteConfig.getString("toolbarImage");
+                boolean isToolbarImageEnabled = mFirebaseRemoteConfig.getBoolean("toolbarImageEnabled");
+
+                if (isToolbarImageEnabled){
+                    Glide.with(MainActivity.this)
+                            .load(toolbarImage)
+                            .into(new CustomTarget<Drawable>() {
+                                @Override
+                                public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                    getSupportActionBar().setBackgroundDrawable(resource);
+                                }
+
+                                @Override
+                                public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                }
+                            });
+                } else {
+                    getSupportActionBar()
+                            .setBackgroundDrawable(new ColorDrawable(Color.parseColor(toolbarColor)));
+                }
+            }
+        });
+
         database = FirebaseDatabase.getInstance();
 
         FirebaseMessaging.getInstance()
                 .getToken()
-                .addOnSuccessListener(new OnSuccessListener<String>() {
-                    @Override
-                    public void onSuccess(String token) {
-                        HashMap<String,Object> map = new HashMap<>();
-                        map.put("token",token);
-                        database.getReference()
-                                .child("users")
-                                .child(FirebaseAuth.getInstance().getUid())
-                                .updateChildren(map);
-                        Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
-                    }
+                .addOnSuccessListener(token -> {
+                    HashMap<String, Object> map = new HashMap<>();
+                    map.put("token", token);
+                    database.getReference()
+                            .child("users")
+                            .child(FirebaseAuth.getInstance().getUid())
+                            .updateChildren(map);
                 });
 
         progressDialog = new ProgressDialog(this);
