@@ -63,7 +63,7 @@ dependencies {
     implementation(libs.recyclerview)
     implementation(libs.cardview)
     implementation(libs.firebase.messaging)
-    implementation(libs.firebase.config)
+    implementation("com.google.firebase:firebase-config")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
