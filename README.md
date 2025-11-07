@@ -5,114 +5,140 @@
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 ![Status](https://img.shields.io/badge/Status-Demo%20Project-yellow)
 
+## 🧠 Overview
+**ChatApp** is a modern, WhatsApp-inspired Android application built using **Firebase** and **Java**, with a **Python backend** for sending push notifications via Firebase Cloud Messaging (FCM).
+
+It provides secure OTP-based login, real-time messaging, group chats, user presence detection, typing indicators, remote UI updates, and smooth user experience with shimmer loading and story sharing — all integrated seamlessly with Firebase services.
+
 ---
 
-## 🧠 Overview  
-**ChatApp** is a WhatsApp-inspired **real-time chat application** built for Android using **Firebase** as the backend.  
-It demonstrates secure **OTP-based login**, **real-time messaging**, **profile management**, and **status/story sharing**, all inside a clean and modern UI.  
-
----
-
-## 🚀 Features  
+## 🚀 Features
 
 | Category | Description |
-|-----------|-------------|
-| 🔐 **Secure Login** | Login using your **11-digit phone number** and verify via **Firebase OTP** |
-| 💬 **Real-Time Chat** | Instantly send and receive messages using Firebase Realtime Database |
-| 👤 **User Profiles** | Add or update your **profile picture** and **name** |
-| 📸 **Stories / Status** | Share images as stories and view others’ statuses (similar to WhatsApp/Instagram) |
-| ✨ **Shimmer Loading** | Displays shimmer animations while chats and users are loading for a smooth UX |
+|-----------|--------------|
+| 🔐 **Secure Login** | Login using your phone number and verify via **Firebase OTP Authentication** |
+| 💬 **Real-Time Chat** | One-on-one and **group messaging** powered by **Firebase Realtime Database** |
+| 📢 **Push Notifications** | Real-time notifications using **Firebase Cloud Messaging** with **Python Flask backend** and **Volley** |
+| 👤 **User Profiles** | Create, edit, and view profiles — including other users’ profiles |
+| 🟢 **Online & Typing Status** | Instantly see if users are online or currently typing |
+| 📸 **Stories / Status** | Upload stories (images) visible to all users, similar to WhatsApp/Instagram |
+| 🎨 **Remote Customization** | Dynamic **theme and toolbar updates** using **Firebase Remote Config** |
+| ✨ **Shimmer Loading** | Elegant shimmer animation for smoother UX while chats and data load |
+| 👥 **Group Chat Support** | Create and participate in group conversations with shared messages |
+| ☁️ **Cloud Storage** | Store profile pictures and statuses securely using **Firebase Storage** |
 
 ---
 
-## 🧩 Tech Stack  
+## 🧩 Tech Stack
 
-**Frontend:** Android (Java, XML)  
-**Backend:** Firebase  
+### 🖥️ Frontend
+- **Language:** Java (Android)
+- **UI Layout:** XML
+- **Libraries:**
+  ```gradle
+  // OTP Input View
+  implementation("com.github.mukeshsolanki.android-otpview-pinview:otpview:3.1.0")
 
-**Firebase Services Used:**  
-- 🔐 **Firebase Authentication** → For OTP verification  
-- 💬 **Firebase Realtime Database** → For storing chats and users  
-- ☁️ **Firebase Storage** → For profile and status images  
+  // Circle Image View
+  implementation("de.hdodenhof:circleimageview:3.1.0")
 
----
+  // Glide for Image Loading
+  implementation("com.github.bumptech.glide:glide:5.0.5")
 
-## 🛠️ Libraries Used  
+  // Reaction Popup
+  implementation("com.github.pgreze:android-reactions:1.6")
 
-```gradle
-// OTP Input View
-implementation("com.github.mukeshsolanki.android-otpview-pinview:otpview:3.1.0")
+  // Circular Status Indicator
+  implementation("com.github.3llomi:CircularStatusView:V1.0.3")
 
-// Circle Image View for profile pictures
-implementation("de.hdodenhof:circleimageview:3.1.0")
+  // Story View (like WhatsApp)
+  implementation("com.github.OMARIHAMZA:StoryView:1.0.2-alpha")
 
-// Glide for image loading
-implementation("com.github.bumptech.glide:glide:5.0.5")
+  // Shimmer Effect
+  implementation("com.facebook.shimmer:shimmer:0.5.0")
 
-// Reaction popup for message emojis
-implementation("com.github.pgreze:android-reactions:1.6")
+  // Volley for HTTP Requests
+  implementation("com.android.volley:volley:1.2.1")
+  ```
 
-// Circular status indicator
-implementation("com.github.3llomi:CircularStatusView:V1.0.3")
-
-// Story view like Instagram/WhatsApp
-implementation("com.github.OMARIHAMZA:StoryView:1.0.2-alpha")
-
-// Shimmer effect for loading
-implementation("com.facebook.shimmer:shimmer:0.5.0")
-```
-
----
-
-## 📲 App Flow  
-
-1. **Login / OTP Verification**  
-   - Enter your 11-digit mobile number  
-   - Receive and verify OTP  
-2. **Profile Setup**  
-   - Upload your name and profile picture  
-   - Stored securely in Firebase  
-3. **Chat Interface**  
-   - View all registered users  
-   - Send & receive messages in real-time  
-4. **Status Sharing**  
-   - Upload stories visible to all users  
-   - View others’ statuses with smooth transitions  
+### ☁️ Backend (Firebase + Python)
+- **Firebase Authentication** → OTP verification  
+- **Firebase Realtime Database** → Store messages, users, presence, and typing status  
+- **Firebase Cloud Messaging (FCM)** → Push notifications  
+- **Firebase Storage** → Images for profile and status  
+- **Firebase Remote Config** → Dynamic toolbar/theme customization  
+- **Python Flask Server** → FCM backend service for notifications  
 
 ---
 
-## 🧑‍💻 How to Run  
+## 📲 App Flow
 
-1. Clone the repository  
+### 🔹 **Login / OTP Verification**
+1. Enter your 11-digit mobile number  
+2. Firebase sends OTP  
+3. Verify the OTP to log in securely  
+
+### 🔹 **Profile Setup**
+- Add your name and profile picture  
+- Data stored securely in Firebase Realtime Database  
+
+### 🔹 **Chat Interface**
+- See online users and typing indicators  
+- Send and receive messages instantly  
+- Create and join group chats  
+
+### 🔹 **Status Sharing**
+- Upload image-based stories  
+- View others' statuses with a smooth transition  
+
+---
+
+## ⚙️ How to Run
+
+1. **Clone the repository**
    ```bash
    git clone https://github.com/amanalis/ChatApp.git
    cd ChatApp
    ```
-2. Open the project in **Android Studio**  
-3. Connect your **Firebase project** (via Tools → Firebase Assistant)  
-4. Enable **Phone Authentication** in Firebase Console  
-5. Run the app on an emulator or Android device  
+
+2. **Open in Android Studio**
+
+3. **Connect your Firebase Project**
+   - Go to `Tools → Firebase Assistant`
+   - Connect Authentication, Realtime Database, and Cloud Messaging
+
+4. **Enable Phone Authentication**
+   - Firebase Console → Authentication → Sign-in Method → Enable **Phone**
+
+5. **Run the Python Notification Server**
+   ```bash
+   python server.py
+   ```
+
+6. **Build & Run the App** on an emulator or physical device.
 
 ---
 
-## 🧠 Future Improvements  
-🔹 Implement **push notifications** using Firebase Cloud Messaging (FCM)  
-🔹 Add **group chat** functionality  
-🔹 Include **dark mode** support  
-🔹 Optimize UI for tablets  
+## 🧠 Future Enhancements
+- 🔹 Message delivery/read receipts (double-tick system)
+- 🔹 Cloud-based group management
+- 🔹 End-to-end encryption
+- 🔹 Voice/video calling
+- 🔹 Dark mode UI support
 
 ---
 
-## 👨‍💻 Developed By  
+## 👨‍💻 Developed By
 
 **Aman Ali**  
 🎓 BSCS Graduate — SZABIST (Class of 2024)  
-💼 Android Developer  
+💼 Android Developer (Flutter | Firebase | Fintech)  
 
-🔗 **LinkedIn:** [linkedin.com/in/aman-alisalim](https://www.linkedin.com/in/aman-alisalim)  
-💻 **GitHub:** [github.com/amanalis](https://github.com/amanalis)  
+🔗 [LinkedIn](https://linkedin.com/in/aman-alisalim)  
+💻 [GitHub](https://github.com/amanalis)  
+🎨 [Behance](https://www.behance.net/amanali00)
 
 ---
 
-## 📜 License  
-This project is licensed under the **MIT License** — feel free to use, modify, and learn from it.  
+## 📜 License
+This project is licensed under the **MIT License** — feel free to use, modify, and learn from it.
